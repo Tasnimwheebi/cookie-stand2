@@ -12,6 +12,7 @@ function City( min, max, name, average ) {
   City.allCity.push( this );
 
 }
+City.allCity = [] ;
 
 function generateRandomNumber( min, max ) {
   return Math.floor( Math.random() * ( max - min + 1 ) + min );
@@ -68,15 +69,16 @@ const newCity = function () {
     const minCustomer = event.target.minCustomer.value;
     const maxCustomer = event.target.maxCustomer.value;
     const averageCookieSales = event.target.averageCookieSales.value;
-    const city = new City( minCustomer, maxCustomer, cityName, [], [], averageCookieSales );
-    formElement.requestFullscreen();
+    const city = new City( minCustomer, maxCustomer, cityName,averageCookieSales );
+    document.getElementById( 'myTable' ).removeChild( document.getElementById( 'myTable' ).lastChild );
     city.getCookieNumber();
     city.render();
     console.log( city.allCity );
     // shift.tableFooter();
     //
+
     tableFooter();
-    document.getElementById( 'myTable' ).deleteRaw( 6 );
+
   } );
   City.allCity = [];
 };
@@ -152,12 +154,20 @@ const tableFooter = function () {
   for ( let i = 0; i < hour.length; i++ ) {
     const th2 = document.createElement( 'th' );
     tr.appendChild( th2 );
-    th2.textContent = seattle.cookieNumber[i] + paris.cookieNumber[i] + dubai.cookieNumber[i] + tokoy.cookieNumber[i] + lima.cookieNumber[i];
+    let totalCookies = 0 ;
+    for ( let j = 0 ; j < City.allCity.length; j++ ){
+      totalCookies += parseInt( City.allCity[j].cookieNumber[i] );
+    }
+    th2.textContent = totalCookies;
   }
 
   const th3 = document.createElement( 'th' );
   tr.appendChild( th3 );
-  th3.textContent = seattle.totalCookieNumber + dubai.totalCookieNumber + tokoy.totalCookieNumber + lima.totalCookieNumber + paris.totalCookieNumber ;
+  let totalOfTotal = 0;
+  for ( let i = 0 ; i < City.allCity.length; i++ ){
+    totalOfTotal += City.allCity[i].totalCookieNumber;
+  }
+  th3.textContent = totalOfTotal ;
 
 };
 
